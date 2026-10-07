@@ -159,14 +159,10 @@ AUTOMAIL_RE = r'<([^<> !]+@[^@<> ]+)>'
 """ Match an automatic email link (`<me@example.com>`). """
 
 HTML_RE = (
-    # Tag
-    r'''(<(\/?+[a-zA-Z][^\s"'<>@]*+(?:\s+[^\s"'=<>]++(?:\s*+=\s*+(?:"[^"]*+"|'[^']*+'|[^\s"'=<>]++))?+)*+\s*+/?|'''
-    # Comment
-    r'!--(?:(?!<!--|-->).)*--|'
-    # Processing instruction
-    r'[?](?:(?!<[?]|[?]>).)*[?]|'
-    # `CDATA`
-    r'!\[CDATA\[(?:(?!<!\[CDATA\[|\]\]>).)*\]\]'
+    r'(<(\/?[a-zA-Z][^<>@ ]*( [^<>]*)?|'          # Tag
+    r'!--(?:(?!<!--|-->).)*--|'                   # Comment
+    r'[?](?:(?!<[?]|[?]>).)*[?]|'                 # Processing instruction
+    r'!\[CDATA\[(?:(?!<!\[CDATA\[|\]\]>).)*\]\]'  # `CDATA`
     ')>)'
 )
 """ Match an HTML tag (`<...>`). """
@@ -575,10 +571,10 @@ class HtmlInlineProcessor(InlineProcessor):
             id = m.group(1)
             value = stash.get(id)
             if value is not None:
-                if isinstance(value, etree.Element):
+                try:
                     # Ensure we don't have a placeholder inside a placeholder
                     return self.unescape(self.md.serializer(value))
-                else:
+                except Exception:
                     return r'\%s' % value
 
         return util.INLINE_PLACEHOLDER_RE.sub(get_stash, text)

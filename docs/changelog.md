@@ -12,13 +12,6 @@ and this project adheres to the
 [Python Version Specification](https://packaging.python.org/en/latest/specifications/version-specifiers/).
 See the [Contributing Guide](contributing.md) for details.
 
-## [Unreleased]
-
-* Update serializer to be non-recursive (#1644).
-* Improve ancestor handling in the inline `Treeprocessor` (#1646).
-* Fix issue where inline HTML attributes were rejected if they had `<` or `>` in the attribute (#1647).
-* Fix issue where an unterminated end tag (`</foo`) could cause all remaining content to be dropped (#1651).
-
 ## [3.11.0] - 2026-09-25
 
 ### Changed

@@ -371,14 +371,12 @@ class InlineProcessor(Treeprocessor):
 
         self.parent_map = {c: p for p in tree.iter() for c in p}
         stack = [(tree, tree_parents)]
-        self.__build_ancestors(tree, tree_parents)
 
         while stack:
             currElement, parents = stack.pop(0)
 
             self.ancestors = parents
-            if currElement is not tree:
-                self.ancestors.append(currElement.tag.lower())
+            self.__build_ancestors(currElement, self.ancestors)
 
             insertQueue = []
             for child in currElement:

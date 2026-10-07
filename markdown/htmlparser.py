@@ -99,12 +99,10 @@ class _HTMLParser(htmlparser.HTMLParser):
     def parse_endtag(self, i):
         start = self.rawdata[i:i+3]
         c = ord(start[-1])
-        is_data = len(start) < 3 or not (65 <= c <= 90 or 97 <= c <= 122)
-        pos = super().parse_endtag(i) if not is_data else -1
-        if pos == -1:
+        if len(start) < 3 or not (65 <= c <= 90 or 97 <= c <= 122):
             self.handle_data(self.rawdata[i:i + 2])
             return i + 2
-        return pos
+        return super().parse_endtag(i)
 
     def parse_starttag(self, i: int) -> int:  # pragma: no cover
         # Treat `</>` as normal data as it is not a real tag.
